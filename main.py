@@ -4,10 +4,9 @@ from trade import Trade
 def main():
     t = Trade()
 
-    start_time = datetime(2020, 1, 1)
+    start_time = datetime(2019, 1, 1)
     end_time = datetime(2024, 12, 31)
 
-    t.dca(code='NVDA', start_time=start_time, end_time=end_time, interval=7)
     t.dca(code='TQQQ', start_time=start_time, end_time=end_time)
     t.dca(code='QQQ', start_time=start_time, end_time=end_time)
     t.dca(code='UPRO', start_time=start_time, end_time=end_time)

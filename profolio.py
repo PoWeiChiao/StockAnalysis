@@ -24,7 +24,7 @@ class Profolio:
         share = int(cash // price)
         self.cash -= share * price
         self.holding[code].extend([price]*share)
-        self._update_holding_details(code, target_datetime)
+        self._update_holding_details(code)
         print(f'Date: {target_datetime.strftime('%Y-%m-%d')}, buy {share} {code} in {price}')
     
     def buy_share(self, share, code, target_datetime, type='Close'):
@@ -41,7 +41,7 @@ class Profolio:
             self.holding[code] = []
         self.cash -= share * price
         self.holding[code].extend([price]*share)
-        self._update_holding_details(code, target_datetime)
+        self._update_holding_details(code)
         print(f'Date: {target_datetime.strftime('%Y-%m-%d')}, buy {share} {code} in {price}')
         
     def sell_share(self, share, code, target_datetime, type='Close'):
