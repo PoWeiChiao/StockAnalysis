@@ -46,7 +46,7 @@ class Info:
         if target_price == -1:
             print(f'No data found for {self._code} on {target_datetime.strftime("%Y%m%d")}')
             return 0.0
-        return ((target_price - self._average) / self._average) * 100
+        return ((target_price / self._average) - 1) * 100
 
 class Profolio:
     def __init__(self, cash: float = 0.0, print_details: bool = False):
