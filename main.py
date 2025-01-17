@@ -3,10 +3,9 @@ from stock import StockCenter
 from trade import Trade
 from profolio import Profolio
 
-code = 'TQQQ'
-start_time = datetime(2024,1,1)
-end_time = datetime(2024,12,31)
-current_time = datetime.now()
+codes = ['TQQQ', 'QLD', 'QQQ', 'UPRO', 'SSO', 'VOO']
+start_time = datetime(2017,1,1)
+end_time = datetime(2018,12,31)
 
 def main() -> None:
     """
@@ -17,18 +16,19 @@ def main() -> None:
     trade = Trade(profolio)
     
     # Perform DCA trade operation
-    trade.dca(code, start_time, end_time)
+    for code in codes:
+        trade.dca(code, start_time, end_time, 14, 1600)
+        # Retrieve holding information
+        info = profolio.get_holding_info(code)
     
-    # Retrieve holding information
-    info = profolio.get_holding_info(code)
+        current_time = datetime(2024, 1, 8)
+        # Adjust current_time to the most recent valid trading day
+        while not stockCenter.is_valid_day(code, current_time):
+            current_time -= timedelta(days=1)
     
-    # Adjust current_time to the most recent valid trading day
-    while not stockCenter.is_valid_day(code, current_time):
-        current_time -= timedelta(days=1)
-    
-    # Print the number of shares, average price, and profit percentage
-    print(f'holding {info.get_share()} {code} in {info.get_average()}, '
-          f'profit: {info.get_profit_in_percentage(current_time)}%')
+        # Print the number of shares, average price, and profit percentage
+        print(f'from {start_time.strftime('%Y-%m-%d')} to {end_time.strftime('%Y-%m-%d')}')
+        print(f'holding {info.get_share()} {code} in {round(info.get_average(), 2)}, 'f'profit: {round(info.get_profit_in_percentage(current_time), 2)}%')
     
 if __name__ == "__main__":
     main()

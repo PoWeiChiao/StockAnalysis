@@ -38,9 +38,9 @@ class Info:
         """
         Calculate the profit percentage for a given stock code and date.
 
-        :param target_datetime: Date for which to fetch the stock price
-        :param type: Type of price to fetch (default is 'Close')
-        :return: Profit percentage as a float
+        :param target_datetime: Date for which to fetch the stock price.
+        :param type: Type of price to fetch (default is 'Close').
+        :return: Profit percentage as a float.
         """
         target_price = StockCenter().get_stock_price(self._code, target_datetime, type)
         if target_price == -1:
@@ -49,8 +49,9 @@ class Info:
         return ((target_price - self._average) / self._average) * 100
 
 class Profolio:
-    def __init__(self, cash: float = 0.0):
+    def __init__(self, cash: float = 0.0, print_details: bool = False):
         self.cash = cash
+        self.print_details = print_details
         self.holding: Dict[str, List[float]] = {}
         self.holding_info: Dict[str, Info] = {}
 
@@ -73,7 +74,8 @@ class Profolio:
             return
         self._update_holding(code, share, price)
         self.cash -= share * price
-        print(f'Date: {target_datetime.strftime("%Y-%m-%d")}, buy {share} {code} at {price}')
+        if self.print_details:
+            print(f'Date: {target_datetime.strftime("%Y-%m-%d")}, buy {share} {code} at {price}')
 
     def buy_fixed_share(self, code: str, share: int, target_datetime: datetime, type: str = 'Close') -> None:
         """Buy a specified number of shares of a stock."""
@@ -87,7 +89,8 @@ class Profolio:
             return
         self._update_holding(code, share, price)
         self.cash -= total_cost
-        print(f'Date: {target_datetime.strftime("%Y-%m-%d")}, buy {share} {code} at {price}')
+        if self.print_details:
+            print(f'Date: {target_datetime.strftime("%Y-%m-%d")}, buy {share} {code} at {price}')
 
     def sell_share(self, code: str, share: int, target_datetime: datetime, type: str = 'Close') -> None:
         """Sell a specified number of shares of a stock."""
@@ -105,7 +108,8 @@ class Profolio:
             del self.holding_info[code]
         else:
             self.holding_info[code].update_info(len(self.holding[code]), sum(self.holding[code]) / len(self.holding[code]))
-        print(f'Date: {target_datetime.strftime("%Y-%m-%d")}, sell {share} {code} at {price}')
+        if self.print_details:
+            print(f'Date: {target_datetime.strftime("%Y-%m-%d")}, sell {share} {code} at {price}')
 
     def get_cash(self) -> float:
         """Return the current cash balance."""

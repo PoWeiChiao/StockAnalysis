@@ -12,13 +12,13 @@ class StockCenter:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def add_stock_record(self, code: str) -> None:
+    def _add_stock_record(self, code: str) -> None:
         """Add a stock record if it doesn't already exist."""
         if code not in self._stock_info:
             self._stock_info[code] = Stock(code)
             self._stock_record.append(code)
 
-    def remove_stock_record(self, code: str) -> None:
+    def _remove_stock_record(self, code: str) -> None:
         """Remove a stock record if it exists."""
         if code in self._stock_info:
             del self._stock_info[code]
@@ -31,19 +31,19 @@ class StockCenter:
     def get_stock_price_info(self, code: str, start_time: datetime, end_time: datetime):
         """Retrieve price information for a stock over a specified time range."""
         if code not in self._stock_info:
-            self.add_stock_record(code)
+            self._add_stock_record(code)
         return self._stock_info[code].get_price_info(start_time, end_time)
 
     def get_stock_price(self, code: str, target_datetime: datetime, type: str = 'Close'):
         """Retrieve the price of a stock at a specific date and time."""
         if code not in self._stock_info:
-            self.add_stock_record(code)
+            self._add_stock_record(code)
         return self._stock_info[code].get_price(target_datetime, type)
     
     def is_valid_day(self, code: str, target_datetime: datetime, type: str = 'Close') -> bool:
         """Check if a specific day is valid for stock data."""
         if code not in self._stock_info:
-            self.add_stock_record(code)
+            self._add_stock_record(code)
         return self._stock_info[code].get_price(target_datetime, type) != -1
 
 class Stock:
