@@ -3,9 +3,9 @@ from stock import StockCenter
 from trade import Trade
 from profolio import Profolio
 
-codes = ['TQQQ', 'QLD', 'QQQ', 'UPRO', 'VOO']
-start_time = datetime(2020,1,1)
-holding_time = timedelta(days=365*5)
+codes = ['TQQQ', 'QLD', 'QQQ', 'UPRO', 'SSO', 'VOO']
+start_time = datetime(2015,1,1)
+holding_time = timedelta(days=365*10)
 
 def main() -> None:
     """

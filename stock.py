@@ -1,6 +1,7 @@
 from typing import List
 import yfinance as yf
 from datetime import datetime, timedelta
+from helper import Helper
 
 class StockCenter:
     _instance = None
@@ -52,14 +53,10 @@ class Stock:
         self.ticker = yf.Ticker(self.code)
         self.info = self._generate_info()
 
-    def _generate_key_by_timestamp(self, target_datetime: datetime) -> str:
-        """Generate a key in 'YYYYMMDD' format from a datetime object."""
-        return target_datetime.strftime('%Y%m%d')
-
     def _generate_info(self) -> dict:
         """Populate the info dictionary with historical stock data."""
         data = self.ticker.history(period='max')
-        return {self._generate_key_by_timestamp(index): row for index, row in data.iterrows()}
+        return {Helper()._generate_key_by_timestamp(index): row for index, row in data.iterrows()}
 
     def get_info(self) -> dict:
         """Return all stored stock information."""
@@ -70,7 +67,7 @@ class Stock:
         price_info = {}
         current_time = start_time
         while current_time <= end_time:
-            key = self._generate_key_by_timestamp(current_time)
+            key = Helper()._generate_key_by_timestamp(current_time)
             if key in self.info:
                 price_info[key] = self.info[key]
             current_time += timedelta(days=1)
@@ -80,6 +77,6 @@ class Stock:
         """Return a specific price type for a given date."""
         if target_datetime > datetime.now() or type not in {'Open', 'High', 'Low', 'Close'}:
             return -1
-        key = self._generate_key_by_timestamp(target_datetime)
+        key = Helper()._generate_key_by_timestamp(target_datetime)
         return self.info.get(key, {}).get(type, -1)
         
