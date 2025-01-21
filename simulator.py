@@ -51,7 +51,7 @@ class EtfSimulator:
                 self.etf[key] = prev_etf
             else:
                 change_ratio = (current_index - prev_index) / prev_index
-                self.etf[key] = prev_etf * (1 + change_ratio * self.leveraged)
+                self.etf[key] = round(prev_etf * (1 + change_ratio * self.leveraged), 2)
                 prev_etf = self.etf[key]
             prev_index = current_index
 
